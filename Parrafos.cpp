@@ -10,6 +10,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
+
 float bPrime(int maxLength, int totalWordsLength, int i, int j)
 {
     if(j-1 == 0) return 0.0;
@@ -38,6 +39,7 @@ int main(int argc, const char * argv[])
         numberOfSpaces++;
         totalWordsLength += wordLengths[i];
         currentWord++;
+<<<<<<< HEAD
         spacePositions.push_back(currentWord+1);
         if(totalWordsLength+numberOfSpaces*idealSize > maxLength)//Si la línea se pasa del máximo
         {
