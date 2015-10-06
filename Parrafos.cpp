@@ -7,12 +7,13 @@
 //
 
 #include <stdio.h>
+#include <math.h>
 #include <iostream>
 #include <vector>
-float bPrime(int maxLength, int numberOfSpaces, int totalWordsLength)
+float bPrime(int maxLength, int totalWordsLength, int i, int j)
 {
-    if(numberOfSpaces == 0) return 0.0;
-    return (maxLength - totalWordsLength)/numberOfSpaces;
+    if(j-1 == 0) return 0.0;
+    return (float)((float)(maxLength - totalWordsLength)/(float)(j-i));
 }
 
 int main(int argc, const char * argv[])
@@ -23,26 +24,98 @@ int main(int argc, const char * argv[])
     for (auto i : words)
         wordLengths.push_back(i.length());
     std::vector<std::string> currentLine;
+    std::vector<int> spacePositions;
     int maxLength = 20;
-    int idealSize = 1;
+    float idealSize = 1.0;
     int numberOfSpaces = 0;
     int totalWordsLength = 0;
+    int startingWord = 0;
+    int currentWord = -1;
     for(int i=0; i<words.size(); i++)
     {
         currentLine.push_back(words[i]);//agregar la palabra y ver que pasaría después
+        currentLine.push_back(space);
+        numberOfSpaces++;
         totalWordsLength += wordLengths[i];
-        if(currentLine.size() > maxLength)//Si la línea se pasa del máximo
+        currentWord++;
+        spacePositions.push_back(currentWord+1);
+        if(totalWordsLength+numberOfSpaces*idealSize > maxLength)//Si la línea se pasa del máximo
         {
-            currentLine.pop_back();//Quitar esa palabra y hacer operaciones
-            totalWordsLength -= wordLengths[i];
-            float bP = bPrime(maxLength, numberOfSpaces, totalWordsLength);
-            std::cout << "b prime is " << bP << std::endl;
+            numberOfSpaces--;
+            currentLine.pop_back();
+            //Si la palabra ya no cabe hay dos opciones.
+            //Primero se quita la palabra para manejar la línea
+            if(numberOfSpaces*idealSize >= words[i].length())//Si cabe quitando todos los espacios
+            {
+                //Si cabe, se tiene la opción de reducir la línea o pasar la palabra a la siguiente
+                float costReduce = 0;
+                float costExtend = 0;
+                /*Reducir*/
+                costReduce = fabs(bPrime(maxLength, totalWordsLength, startingWord, currentWord) - (float)idealSize)*(currentWord-startingWord);
+                currentLine.pop_back();
+                totalWordsLength -= wordLengths[i];
+                currentWord--;
+                /*Extender*/
+                costExtend = fabs(bPrime(maxLength, totalWordsLength, startingWord, currentWord) - (float)idealSize)*(currentWord-startingWord);
+                if(costReduce < costExtend)
+                {
+                    //Reducir cuesta menos
+                    int neededSize = words[i].length();
+                    int aux=0;
+                    while(neededSize != 0)
+                    {
+                        currentLine.erase(currentLine.begin() + spacePositions[aux]);
+                        //currentLine[spacePositions[aux]].pop_back();
+                        aux++;
+                        neededSize--;
+                    }
+                    currentLine.push_back(words[i]);
+                    totalWordsLength+=wordLengths[i];
+                    //Saltar a la siguiente línea
+                    for(auto i : currentLine)
+                        std::cout << i << std::flush;
+                    currentLine.clear();
+                    startingWord = currentWord;
+                    numberOfSpaces = 0;
+                    totalWordsLength = 0;
+                    std::cout << std::endl;
+                }
+                else
+                {
+                    //Extender cuesta menos
+                    //Saltar a la siguiente línea
+                    for(auto i : currentLine)
+                        std::cout << i << std::flush;
+                    currentLine.clear();
+                    currentLine.push_back(words[i]);
+                    startingWord = currentWord;
+                    numberOfSpaces = 0;
+                    totalWordsLength = 0;
+                    std::cout << std::endl;
+                }
+            }
+            else//Si no cabe, se debe pasar a la siguiente línea
+            {
+                totalWordsLength-=wordLengths[i];
+                currentLine.pop_back();
+                for(auto i : currentLine)
+                    std::cout << i << std::flush;
+                currentLine.clear();
+                currentLine.push_back(words[i]);
+                currentLine.push_back(space);
+                startingWord = currentWord;
+                numberOfSpaces = 0;
+                totalWordsLength = wordLengths[i];
+                numberOfSpaces++;
+                std::cout << std::endl;
+            }
         }
-        else
+        else if(totalWordsLength+numberOfSpaces*idealSize == maxLength)//Las palabras caben exactamente en la línea
         {
-            currentLine.push_back(space);
-            numberOfSpaces++;
+            
         }
     }
+    for(auto i : currentLine)
+        std::cout << i << std::flush;
     return 0;
 }
