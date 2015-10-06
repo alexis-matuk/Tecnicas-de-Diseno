@@ -9,10 +9,10 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-float bPrime(int maxLength, int numberOfSpaces, int totalWordsLength)
+float bPrime(int maxLength,int totalWordsLength, int i, int j)
 {
-    if(numberOfSpaces == 0) return 0.0;
-    return (maxLength - totalWordsLength)/numberOfSpaces;
+    if(i-j == 0) return 0.0;
+    return (float)(maxLength - totalWordsLength)/(float)(j-i);
 }
 
 int main(int argc, const char * argv[])
@@ -27,21 +27,28 @@ int main(int argc, const char * argv[])
     int idealSize = 1;
     int numberOfSpaces = 0;
     int totalWordsLength = 0;
+    int startingWord = 0;
+    int currentWord = 0;
     for(int i=0; i<words.size(); i++)
     {
         currentLine.push_back(words[i]);//agregar la palabra y ver que pasaría después
         totalWordsLength += wordLengths[i];
-        if(currentLine.size() > maxLength)//Si la línea se pasa del máximo
+        currentWord++;
+        if(totalWordsLength+numberOfSpaces > maxLength)//Si la línea se pasa del máximo
         {
             currentLine.pop_back();//Quitar esa palabra y hacer operaciones
             totalWordsLength -= wordLengths[i];
-            float bP = bPrime(maxLength, numberOfSpaces, totalWordsLength);
+            for(auto i : currentLine)
+                std::cout << i;
+            std::cout << std::endl;
+            float bP = bPrime(maxLength, totalWordsLength, startingWord, currentWord);
             std::cout << "b prime is " << bP << std::endl;
         }
         else
         {
             currentLine.push_back(space);
-            numberOfSpaces++;
+            for(int i=0; i<idealSize; i++)
+                numberOfSpaces++;
         }
     }
     return 0;
