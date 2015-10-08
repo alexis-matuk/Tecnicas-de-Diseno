@@ -69,7 +69,7 @@
 //    std::stack<T> resultStack;
 //    while(currentRow != 0 && currentColumn != 0)
 //    {
-//        if(firstSet[currentRow] == secondSet[currentColumn])
+//        if(subsequenceMatrix[currentRow-1][currentColumn] == subsequenceMatrix[currentRow][currentColumn-1])
 //        {
 //            resultStack.push(firstSet[currentRow-1]);
 //            currentRow--;
@@ -93,12 +93,15 @@
 //
 //int main(int argc, const char * argv[])
 //{
-//    std::vector<char> first = {'a','b','a','c','e','b'};
-//    std::vector<char> second = {'a','d','b','a','v','c','e','b'};
+////    std::vector<char> first = {'a','b','a','c','e','b'};
+////    std::vector<char> second = {'a','d','b','a','v','c','e','b'};
 ////    std::vector<char> first = {'1','0','0','1','0','1','0','1'};
 ////    std::vector<char> second = {'0','1','0','1','1','0','1','1','0'};
+//    std::vector<char> first = {'g','a','c','a','c','g','g','g','a','t','t','a','g'};
+//    std::vector<char> second = {'g','g','a','c','a','t','c','g','g','a','a','t','a','g'};
 //    
 //    std::vector<std::vector<int>> matrix = buildSubsequenceMatrix(first, second);
+//    printSubsequenceMatrix(matrix);
 //    std::cout << "La subsecuencia más larga es: ";
 //    getLargestSubsequence(matrix, first, second);
 //    
