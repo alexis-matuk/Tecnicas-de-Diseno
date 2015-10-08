@@ -16,6 +16,19 @@ float bPrime(int maxLength, int totalWordsLength, int numberOfSpaces)
     return (float)((float)(maxLength - totalWordsLength)/(float)(numberOfSpaces));
 }
 
+void reset(std::vector<std::string> &currentLine, int & totalWordsLength, int & numberOfSpaces, int & currentLineLength, int & i)
+{
+    for(auto i : currentLine)
+        std::cout << i << std::flush;
+    std::cout << std::endl;
+    currentLine.clear();
+    totalWordsLength = 0;
+    numberOfSpaces = 0;
+    currentLineLength = 0;
+    if(i%2 == 0)
+        i--;
+}
+
 int main(int argc, const char * argv[])
 {
     std::vector<std::string> words = {"The", " ", "quick", " ", "brown", " ", "fox", " ", "has", " ", "over", " ", "the", " ", "lazy", " ", "og"};
@@ -44,7 +57,6 @@ int main(int argc, const char * argv[])
                 totalWordsLength-=currentLine[currentLine.size()-1].length();
                 currentLine.pop_back();
                 i--;
-                
             }
             //Si la palabra ya no cabe hay dos opciones.
             //Primero se quita la palabra para manejar la línea
@@ -71,55 +83,23 @@ int main(int argc, const char * argv[])
                     //Reducir cuesta menos
                     currentLine.push_back(words[i]);
                     //Saltar a la siguiente línea
-                    for(auto i : currentLine)
-                        std::cout << i << std::flush;
-                    std::cout << std::endl;
-                    currentLine.clear();
-                    totalWordsLength = 0;
-                    numberOfSpaces = 0;
-                    currentLineLength = 0;
-                    if(i%2 == 0)
-                        i--;
+                    reset(currentLine, totalWordsLength, numberOfSpaces, currentLineLength, i);
                 }
                 else
                 {
                     //Extender cuesta menos
                     //Saltar a la siguiente línea
-                    for(auto i : currentLine)
-                        std::cout << i << std::flush;
-                    std::cout << std::endl;
-                    currentLine.clear();
-                    totalWordsLength = 0;
-                    numberOfSpaces = 0;
-                    currentLineLength = 0;
-                    if(i%2 == 0)
-                        i--;
+                    reset(currentLine, totalWordsLength, numberOfSpaces, currentLineLength, i);
                 }
             }
             else//Si no cabe, se debe pasar a la siguiente línea
             {
-                for(auto i : currentLine)
-                    std::cout << i << std::flush;
-                std::cout << std::endl;
-                currentLine.clear();
-                totalWordsLength = 0;
-                numberOfSpaces = 0;
-                currentLineLength = 0;
-                if(i%2 == 0)
-                    i--;
+                reset(currentLine, totalWordsLength, numberOfSpaces, currentLineLength, i);
             }
         }
         else if(totalWordsLength+numberOfSpaces*idealSize == maxLength)
         {
-            for(auto i : currentLine)
-                std::cout << i << std::flush;
-            std::cout << std::endl;
-            currentLine.clear();
-            totalWordsLength = 0;
-            numberOfSpaces = 0;
-            currentLineLength = 0;
-            if(i%2 == 0)
-                i--;
+            reset(currentLine, totalWordsLength, numberOfSpaces, currentLineLength, i);
         }
         else
         {
