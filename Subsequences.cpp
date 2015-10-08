@@ -72,8 +72,8 @@
 //        if(firstSet[currentRow] == secondSet[currentColumn])
 //        {
 //            resultStack.push(firstSet[currentRow-1]);
-//            currentRow-=1;
-//            currentColumn-=1;
+//            currentRow--;
+//            currentColumn--;
 //        }
 //        else
 //        {

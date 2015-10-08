@@ -11,7 +11,7 @@
 //#include <iostream>
 //#include <vector>
 //
-//std::vector<int> calculateDistance(int maxKilometers, std::vector<int> distances)
+//std::vector<int> calculateDistance(int maxKilometers, std::vector<int> distances, bool & err)
 //{
 //    std::vector<int> solution;//crear conjunto solución
 //    int j = 0;//elemento x
@@ -24,7 +24,8 @@
 //            if(distances[j+1] > maxKilometers)
 //            {
 //                std::vector<int> error;
-//                std::cerr << "No es posible completar el recorrido con la capacidad máxima en el tanque" << std::endl;
+//                std::cerr << "No es posible completar el recorrido con la capacidad máxima del tanque" << std::endl;
+//                err = true;
 //                return error;
 //            }
 //            solution.push_back(j);
@@ -42,13 +43,14 @@
 //int main(int argc, const char * argv[])
 //{
 //    std::vector<int> distances = {0,1000, 1500, 500, 700, 2000, 3000};
-//    int maxKilometers = 2000;
-//    std::vector<int> solution = calculateDistance(maxKilometers, distances);
+//    int maxKilometers = 3000;
+//    bool error = false;
+//    std::vector<int> solution = calculateDistance(maxKilometers, distances,error);
 //    if(!solution.empty())
 //    {
 //        for(int i=0; i<solution.size(); i++)
 //            std::cout << "El camión debe recargar gasolina en la parada " << solution[i] << std::endl;
 //    }
-//    else std::cout << "El camión no tiene que hacer paradas" << std::endl;
+//    else if(!error) std::cout << "El camión no tiene que hacer paradas" << std::endl;
 //    return 0;
 //}
