@@ -21,6 +21,12 @@
 //        //el candidato siempre va a ser la distancia j+1
 //        if(currentKilometers + distances[j+1] > maxKilometers)//determinar si el candidato es prometedor para el conjunto solución
 //        {
+//            if(distances[j+1] > maxKilometers)
+//            {
+//                std::vector<int> error;
+//                std::cerr << "No es posible completar el recorrido con la capacidad máxima en el tanque" << std::endl;
+//                return error;
+//            }
 //            solution.push_back(j);
 //            currentKilometers = 0;
 //        }
@@ -35,12 +41,14 @@
 //
 //int main(int argc, const char * argv[])
 //{
-//    std::vector<int> distances = {1000, 1500, 500, 700, 2000, 3000};
-//    int maxKilometers = 3000;
+//    std::vector<int> distances = {0,1000, 1500, 500, 700, 2000, 3000};
+//    int maxKilometers = 2000;
 //    std::vector<int> solution = calculateDistance(maxKilometers, distances);
-//    for(int i=0; i<solution.size(); i++)
+//    if(!solution.empty())
 //    {
-//        std::cout << "El camión debe recargar gasolina en la parada " << solution[i]+1 << std::endl;
+//        for(int i=0; i<solution.size(); i++)
+//            std::cout << "El camión debe recargar gasolina en la parada " << solution[i] << std::endl;
 //    }
+//    else std::cout << "El camión no tiene que hacer paradas" << std::endl;
 //    return 0;
 //}
